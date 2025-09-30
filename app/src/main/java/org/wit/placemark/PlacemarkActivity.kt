@@ -1,10 +1,7 @@
-package ie.setu.placemark
+package org.wit.placemark
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import timber.log.Timber
 import timber.log.Timber.i
 

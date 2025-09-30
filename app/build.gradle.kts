@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "ie.setu.placemark"
+    namespace = "org.wit.placemark"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "ie.setu.placemark"
+        applicationId = "org.wit.placemark"
         minSdk = 30
         targetSdk = 36
         versionCode = 1
