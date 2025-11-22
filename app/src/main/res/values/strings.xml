@@ -5,6 +5,7 @@
     <string name="hint_placemarkDescription">Description</string>
     <string name="menu_addPlacemark">Add</string>
     <string name="menu_cancelPlacemark">Cancel</string>
+    <string name="menu_deletePlacemark">Delete</string>
     <string name="placemark_addTitle">Please enter a title</string>
     <string name="save_placemark"> Save placemark </string>
     <string name="button_addImage"> Add Image </string>

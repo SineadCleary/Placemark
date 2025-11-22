@@ -19,6 +19,7 @@ class PlacemarkListActivity : AppCompatActivity(), PlacemarkListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityPlacemarkListBinding
+    private var position: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,11 +60,13 @@ class PlacemarkListActivity : AppCompatActivity(), PlacemarkListener {
             }
         }
 
-    override fun onPlacemarkClick(placemark: PlacemarkModel) {
+    override fun onPlacemarkClick(placemark: PlacemarkModel, pos : Int) {
         val launcherIntent = Intent(this, PlacemarkActivity::class.java)
         launcherIntent.putExtra("placemark_edit", placemark)
+        position = pos
         getClickResult.launch(launcherIntent)
     }
+
 
     private val getClickResult =
         registerForActivityResult(
@@ -73,5 +76,8 @@ class PlacemarkListActivity : AppCompatActivity(), PlacemarkListener {
                 (binding.recyclerView.adapter)?.
                 notifyItemRangeChanged(0,app.placemarks.findAll().size)
             }
+            else // Deleting
+                if (it.resultCode == 99)     (binding.recyclerView.adapter)?.notifyItemRemoved(position)
         }
+
 }

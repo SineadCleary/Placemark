@@ -32,12 +32,11 @@ class PlacemarkAdapter(private var placemarks: List<PlacemarkModel>,
             binding.placemarkTitle.text = placemark.title
             binding.description.text = placemark.description
             Picasso.get().load(placemark.image).resize(200,200).into(binding.imageIcon)
-            binding.root.setOnClickListener { listener.onPlacemarkClick(placemark) }
+            binding.root.setOnClickListener { listener.onPlacemarkClick(placemark,adapterPosition) }
         }
     }
 }
 
-
 interface PlacemarkListener {
-    fun onPlacemarkClick(placemark: PlacemarkModel)
+    fun onPlacemarkClick(placemark: PlacemarkModel, position : Int)
 }

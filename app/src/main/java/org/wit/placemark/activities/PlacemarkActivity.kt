@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
@@ -23,7 +24,7 @@ class PlacemarkActivity : AppCompatActivity() {
     var placemark = PlacemarkModel()
     lateinit var app : MainApp
     var edit = false
-    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
 //    var location = Location(52.245696, -7.139102, 15f)
 
@@ -71,8 +72,13 @@ class PlacemarkActivity : AppCompatActivity() {
         }
 
         binding.chooseImage.setOnClickListener {
-            showImagePicker(imageIntentLauncher)
+            // showImagePicker(imageIntentLauncher,this)
+            val request = PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                .build()
+            imageIntentLauncher.launch(request)
         }
+
 
         binding.placemarkLocation.setOnClickListener {
             val location = Location(52.245696, -7.139102, 15f)
@@ -93,37 +99,43 @@ class PlacemarkActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_placemark, menu)
+        if (edit) menu.getItem(0).isVisible = true
         return super.onCreateOptionsMenu(menu)
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.item_cancel -> {
+            R.id.item_delete -> {
+                setResult(99)
+                app.placemarks.delete(placemark)
                 finish()
-            }
-        }
-        return super.onOptionsItemSelected(item)
+            }        R.id.item_cancel -> { finish() }
+        };       return super.onOptionsItemSelected(item)
     }
 
+
+
     private fun registerImagePickerCallback() {
-        imageIntentLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { result ->
-                when(result.resultCode){
-                    RESULT_OK -> {
-                        if (result.data != null) {
-                            i("Got Result ${result.data!!.data}")
-                            placemark.image = result.data!!.data!!
-                            Picasso.get()
-                                .load(placemark.image)
-                                .into(binding.placemarkImage)
-                            binding.chooseImage.setText(R.string.button_changeImage)
-                        } // end of if
-                    }
-                    RESULT_CANCELED -> { } else -> { }
-                }
+        imageIntentLauncher = registerForActivityResult(
+            ActivityResultContracts.PickVisualMedia()
+        ) {
+            try{
+                contentResolver
+                    .takePersistableUriPermission(it!!,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION )
+                placemark.image = it // The returned Uri
+                i("IMG :: ${placemark.image}")
+                Picasso.get()
+                    .load(placemark.image)
+                    .into(binding.placemarkImage)
             }
+            catch(e:Exception){
+                e.printStackTrace()
+            }
+        }
     }
+
 
     private fun registerMapCallback() {
         mapIntentLauncher =
