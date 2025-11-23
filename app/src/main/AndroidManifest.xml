@@ -16,6 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Placemark"
         tools:targetApi="34">
+        <activity
+            android:name=".activities.PlacemarkMapsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_placemark_maps"
+            android:theme="@style/Theme.Placemark" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

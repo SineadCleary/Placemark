@@ -44,7 +44,7 @@ class PlacemarkActivity : AppCompatActivity() {
             edit = true
             placemark = intent.extras?.getParcelable("placemark_edit")!!
             binding.placemarkTitle.setText(placemark.title)
-            binding.placemarkDescription.setText(placemark.description)
+            binding.description.setText(placemark.description)
             binding.btnAdd.setText(R.string.save_placemark)
             Picasso.get()
                 .load(placemark.image)
@@ -56,7 +56,7 @@ class PlacemarkActivity : AppCompatActivity() {
 
         binding.btnAdd.setOnClickListener() {
             placemark.title = binding.placemarkTitle.text.toString()
-            placemark.description = binding.placemarkDescription.text.toString()
+            placemark.description = binding.description.text.toString()
             if (placemark.title.isEmpty()) {
                 Snackbar.make(it,R.string.placemark_addTitle, Snackbar.LENGTH_LONG)
                     .show()
